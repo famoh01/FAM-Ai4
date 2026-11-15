@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101524">
+  <meta name="description" content="เว็บแอปมือถือสำหรับเตรียมรูปและคลิปเพื่อทำ Face Swap ผ่าน Magic Hour API">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>FaceSwap Lab — Face Swap บนมือถือ</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b1020;--panel:#141b2d;--panel2:#19233a;--line:#28334d;--text:#f4f6fc;--muted:#a8b2c9;--blue:#6c8cff;--mint:#5de0bd;--warn:#ffd27d}
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(ellipse at 50% -10%,#26345a 0%,var(--bg) 55%);color:var(--text);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    .wrap{max-width:620px;margin:auto;padding:24px 16px 42px}.top{display:flex;align-items:center;gap:12px;margin:4px 0 24px}.logo{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(140deg,#87a1ff,#554ff2);font-size:23px;box-shadow:0 8px 24px #546dff44}.top h1{font-size:19px;margin:0}.top p{margin:2px 0 0;color:var(--muted);font-size:13px}.badge{margin-left:auto;border:1px solid #315d58;color:var(--mint);background:#16352f;border-radius:999px;padding:6px 10px;font-size:12px;white-space:nowrap}
+    .hero{margin:0 0 18px}.hero h2{font-size:28px;line-height:1.15;margin:0 0 8px;letter-spacing:-.5px}.hero p{color:var(--muted);margin:0;font-size:14px}.notice{border:1px solid #65512b;background:#342b1a;color:#ffe3ae;padding:12px 14px;border-radius:14px;font-size:13px;margin:16px 0 18px}.notice b{color:#fff0d1}
+    .card{background:linear-gradient(180deg,#171f32,#12192a);border:1px solid var(--line);border-radius:20px;padding:16px;margin:12px 0;box-shadow:0 12px 30px #0002}.cardhead{display:flex;align-items:center;gap:11px;margin-bottom:14px}.num{height:29px;width:29px;border-radius:10px;display:grid;place-items:center;background:#263660;color:#b8c8ff;font-weight:750;font-size:14px}.card h3{font-size:16px;margin:0}.sub{font-size:12px;color:var(--muted);margin:2px 0 0}.drop{min-height:116px;border:1.5px dashed #445173;border-radius:16px;background:#101729;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;cursor:pointer;transition:.15s}.drop:active{transform:scale(.99);border-color:var(--blue)}.drop input{display:none}.drop .ico{font-size:25px;margin-bottom:5px}.drop strong{display:block;font-size:14px}.drop small{display:block;color:var(--muted);margin-top:4px;font-size:12px}.preview{display:none;margin-top:12px;overflow:hidden;border-radius:14px;background:#090d16}.preview img,.preview video{display:block;width:100%;max-height:320px;object-fit:contain;background:#080b12}.filemeta{padding:9px 11px;color:#d8def0;font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.remove{border:0;background:transparent;color:#ffabb2;font-size:12px;padding:8px 2px 0;cursor:pointer}
+    .checks{display:flex;gap:10px;align-items:flex-start;color:#c8d0e3;font-size:13px;margin:16px 2px}.checks input{width:18px;height:18px;accent-color:#7290ff;margin:1px 0 0}.btn{width:100%;border:0;border-radius:15px;padding:15px 18px;background:linear-gradient(110deg,#7696ff,#605af2);color:white;font-weight:750;font-size:16px;box-shadow:0 9px 24px #586df544;cursor:pointer}.btn:disabled{opacity:.48;cursor:not-allowed;box-shadow:none}.result{display:none;margin-top:16px;border-radius:16px;padding:14px;border:1px solid #315d58;background:#142c2b}.result h3{margin:0 0 5px;font-size:15px;color:var(--mint)}.result p{margin:0;color:#d5e5e3;font-size:13px}.steps{display:grid;gap:8px;margin-top:14px}.step{display:flex;gap:9px;align-items:flex-start;color:#c1cbe0;font-size:13px}.tick{color:var(--mint);font-weight:800}.foot{font-size:11px;color:#8792aa;text-align:center;margin:20px 4px 0}.smalllink{color:#b8c8ff;text-decoration:underline;text-underline-offset:3px}
+    @media(min-width:600px){.wrap{padding-top:34px}.hero h2{font-size:33px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top"><div class="logo">✦</div><div><h1>FaceSwap Lab</h1><p>เว็บแอปส่วนตัว • ปรับหน้าจอสำหรับ Android</p></div><span class="badge" id="apiBadge">กำลังตรวจ API</span></header>
+    <section class="hero"><h2>สลับใบหน้า<br>ในคลิปวิดีโอ</h2><p>เลือกรูปต้นแบบและคลิปจากมือถือ แล้วส่งไปประมวลผลผ่าน Magic Hour</p></section>
+    <div class="notice"><b>ก่อนส่งงาน:</b> ไฟล์รูปและวิดีโอจะถูกอัปโหลดไปยัง Magic Hour เพื่อประมวลผลจริง อาจมีการใช้เครดิต/ค่าใช้จ่าย กรุณาทดลองคลิปสั้นและตรวจราคาในบัญชีก่อน</div>
+
+    <section class="card">
+      <div class="cardhead"><span class="num">1</span><div><h3>เลือกรูปใบหน้าต้นแบบ</h3><p class="sub">แนะนำรูปชัด มองตรง และแสงสว่างพอ</p></div></div>
+      <label class="drop" for="faceInput"><span><span class="ico">🖼️</span><strong>แตะเพื่อเลือกรูป</strong><small>JPG, PNG หรือ WEBP</small></span><input id="faceInput" type="file" accept="image/jpeg,image/png,image/webp"></label>
+      <div id="facePreview" class="preview"><img id="faceImg" alt="ตัวอย่างรูปใบหน้า"><div id="faceMeta" class="filemeta"></div></div>
+    </section>
+
+    <section class="card">
+      <div class="cardhead"><span class="num">2</span><div><h3>เลือกวิดีโอเป้าหมาย</h3><p class="sub">ประมวลผลตั้งแต่ต้นคลิปได้สูงสุด 5 นาที (อาจติดข้อจำกัดผู้ให้บริการ)</p></div></div>
+      <label class="drop" for="videoInput"><span><span class="ico">🎞️</span><strong>แตะเพื่อเลือกวิดีโอ</strong><small>MP4 หรือ MOV • แนะนำคลิปสั้นเพื่อทดลอง</small></span><input id="videoInput" type="file" accept="video/mp4,video/quicktime,video/webm"></label>
+      <div id="videoPreview" class="preview"><video id="videoPlayer" controls playsinline></video><div id="videoMeta" class="filemeta"></div></div>
+      <label for="clipSeconds" style="display:block;margin-top:15px;font-size:13px;color:#c8d0e3">ความยาวช่วงที่จะสลับ (วินาที) — เริ่มจากต้นคลิป</label>
+      <input id="clipSeconds" type="number" min="1" max="300" value="5" inputmode="numeric" style="width:100%;margin-top:7px;padding:12px;border-radius:12px;border:1px solid #445173;background:#101729;color:#fff;font-size:16px">
+      <p id="creditEstimate" class="sub" style="margin-top:7px">ประมาณ 120 เครดิตสำหรับ 5 วินาที (ตรวจราคาในบัญชีก่อนเริ่ม)</p>
+    </section>
+
+    <label class="checks"><input type="checkbox" id="consent"><span>ฉันมีสิทธิ์ใช้รูปใบหน้าและวิดีโอนี้ หรือได้รับอนุญาตจากเจ้าของแล้ว</span></label>
+    <button id="checkBtn" class="btn" disabled>เริ่มสลับใบหน้า</button>
+    <section id="result" class="result" aria-live="polite"><h3 id="resultTitle">สถานะงาน</h3><p id="resultText">กำลังเตรียมส่งงาน…</p><div id="jobOutput" style="margin-top:12px"></div></section>
+    <p class="foot">นี่คือการสลับใบหน้า ไม่ใช่การเปลี่ยนทั้งตัวหรือฉาก API key อยู่ฝั่งเซิร์ฟเวอร์เท่านั้น รูปและคลิปจะถูกส่งไปยังผู้ให้บริการเพื่อประมวลผลเมื่อกดเริ่ม</p>
+  </main>
+  <script>
+    const faceInput=document.getElementById('faceInput'), videoInput=document.getElementById('videoInput'), consent=document.getElementById('consent'), btn=document.getElementById('checkBtn'), result=document.getElementById('result'), clipSeconds=document.getElementById('clipSeconds');
+    const badge=document.getElementById('apiBadge'), title=document.getElementById('resultTitle'), text=document.getElementById('resultText'), output=document.getElementById('jobOutput');
+    let faceUrl='', videoUrl='', apiReady=false, videoDuration=0, polling=false;
+    const fmt=n=>{if(!Number.isFinite(n))return 'ไม่ทราบ';if(n<1024*1024)return (n/1024).toFixed(0)+' KB';return (n/1024/1024).toFixed(1)+' MB'};
+    const duration=s=>{if(!Number.isFinite(s))return 'ไม่ทราบความยาว';const m=Math.floor(s/60),r=Math.floor(s%60);return `${m}:${String(r).padStart(2,'0')} นาที`};
+    function update(){const sec=Number(clipSeconds.value||0);btn.disabled=!(apiReady&&faceInput.files.length&&videoInput.files.length&&consent.checked&&sec>0&&sec<=Math.min(300,videoDuration||300));document.getElementById('creditEstimate').textContent=`ประมาณ ${Math.ceil(sec*24).toLocaleString()} เครดิต (${sec} วินาที × 24; ยอดจริงให้ตรวจในบัญชี Magic Hour)`}
+    async function checkApi(){try{const r=await fetch('/api/status');const d=await r.json();apiReady=!!d.ready;badge.textContent=apiReady?'API พร้อม':'รอตั้งค่า API';badge.style.color=apiReady?'#5de0bd':'#ffd27d';badge.style.borderColor=apiReady?'#315d58':'#65512b';if(!apiReady){title.textContent='ยังเชื่อม API ไม่ได้';text.textContent='ต้องตั้ง MAGIC_HOUR_API_KEY ไว้ในเซิร์ฟเวอร์ก่อน จึงจะส่งคลิปไปประมวลผลได้';result.style.display='block'}update()}catch(e){apiReady=false;badge.textContent='ยังไม่มีเซิร์ฟเวอร์';title.textContent='รอเชื่อมเซิร์ฟเวอร์';text.textContent='ไฟล์หน้านี้อย่างเดียวไม่สามารถเก็บคีย์ API อย่างปลอดภัยได้ ต้องรัน backend ด้วย';result.style.display='block';update()}}
+    faceInput.addEventListener('change',()=>{if(faceUrl)URL.revokeObjectURL(faceUrl);const f=faceInput.files[0];if(!f){document.getElementById('facePreview').style.display='none';update();return}faceUrl=URL.createObjectURL(f);document.getElementById('faceImg').src=faceUrl;document.getElementById('faceMeta').innerHTML=`<span>${f.name}</span><span>${fmt(f.size)}</span>`;document.getElementById('facePreview').style.display='block';update()});
+    videoInput.addEventListener('change',()=>{if(videoUrl)URL.revokeObjectURL(videoUrl);const f=videoInput.files[0];if(!f){document.getElementById('videoPreview').style.display='none';videoDuration=0;update();return}videoUrl=URL.createObjectURL(f);const v=document.getElementById('videoPlayer');v.src=videoUrl;v.onloadedmetadata=()=>{videoDuration=v.duration;document.getElementById('videoMeta').innerHTML=`<span>${f.name}</span><span>${duration(v.duration)} • ${fmt(f.size)}</span>`;clipSeconds.max=Math.floor(Math.min(300,v.duration));if(Number(clipSeconds.value)>Number(clipSeconds.max))clipSeconds.value=clipSeconds.max;update()};document.getElementById('videoPreview').style.display='block';update()});
+    consent.addEventListener('change',update);clipSeconds.addEventListener('input',update);
+    function show(msg,heading='สถานะงาน'){title.textContent=heading;text.textContent=msg;result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'nearest'})}
+    async function pollJob(id){if(polling)return;polling=true;try{for(let i=0;i<360;i++){await new Promise(r=>setTimeout(r,5000));const res=await fetch(`/api/jobs/${encodeURIComponent(id)}`);const d=await res.json();if(!res.ok)throw new Error(d.detail||'อ่านสถานะงานไม่ได้');if(d.status==='complete'||d.status==='completed'){show(`เสร็จแล้ว${d.credits_charged?` • ใช้ ${d.credits_charged} เครดิต`:''}`,'ทำ Face Swap สำเร็จ ✓');if(d.output_url)output.innerHTML=`<a class="smalllink" href="${d.output_url}" target="_blank" rel="noopener">เปิดหรือดาวน์โหลดวิดีโอผลลัพธ์</a>`;return}if(d.status==='error'||d.status==='failed'||d.status==='canceled')throw new Error(d.error||'ผู้ให้บริการประมวลผลไม่สำเร็จ');show(`กำลังประมวลผล… สถานะ: ${d.status}${d.credits_charged?` • เครดิต ${d.credits_charged}`:''}`)}}catch(e){show(e.message,'งานไม่สำเร็จ')}finally{polling=false}}
+    btn.addEventListener('click',async()=>{const sec=Number(clipSeconds.value);if(!apiReady){show('ยังไม่ได้ตั้งค่า Magic Hour API key ฝั่งเซิร์ฟเวอร์','ยังไม่พร้อม');return}if(videoDuration>300||sec>videoDuration){show('คลิปหรือช่วงที่เลือกยาวเกิน 5 นาที/เกินความยาววิดีโอ กรุณาตัดคลิปก่อน','ตรวจคลิปอีกครั้ง');return}const estimate=Math.ceil(sec*24);if(!confirm(`จะส่งรูปและวิดีโอไปยัง Magic Hour เพื่อสลับใบหน้า\n\nช่วง ${sec} วินาที\nประมาณ ${estimate.toLocaleString()} เครดิต (ยอดจริงอาจต่างกัน)\n\nทดลอง 5–10 วินาทีก่อนเพื่อเช็กผลและค่าใช้จ่าย\n\nยืนยันส่งงานหรือไม่?`))return;btn.disabled=true;output.textContent='';show('กำลังอัปโหลดไฟล์และส่งงานไปยัง Magic Hour… อาจใช้เวลาสักครู่');try{const fd=new FormData();fd.append('face_image',faceInput.files[0]);fd.append('target_video',videoInput.files[0]);fd.append('clip_seconds',String(sec));fd.append('consent','yes');const res=await fetch('/api/process',{method:'POST',body:fd});const d=await res.json();if(!res.ok)throw new Error(d.detail||'ส่งงานไม่สำเร็จ');show(`รับงานแล้ว • รหัส ${d.id}${d.credits_charged?` • ประมาณ ${d.credits_charged} เครดิต`:''}`,'กำลังประมวลผล');pollJob(d.id)}catch(e){show(e.message,'ส่งงานไม่สำเร็จ')}finally{update()}});
+    if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}checkApi();
+  </script>
+</body>
+</html>
