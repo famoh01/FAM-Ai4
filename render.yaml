@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: faceswap-lab
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MAGIC_HOUR_API_KEY
+        sync: false
+      - key: MAX_FILE_BYTES
+        value: "524288000"
